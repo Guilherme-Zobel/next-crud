@@ -1,15 +1,23 @@
 import Layout from "../components/Layout";
 import Table from "../components/Table";
-import Client from "../core/Client";
+import Customer from "../core/Customer";
 
 export default function Home() {
 
-  const clients = [
-    new Client('Ana', 34, '1'),
-    new Client('Bia', 45, '2'),
-    new Client('Caralos', 23, '3'),
-    new Client('Pedro', 54, '4'),
+  const customers = [
+    new Customer('Ana', 34, '1'),
+    new Customer('Bia', 45, '2'),
+    new Customer('Caralos', 23, '3'),
+    new Customer('Pedro', 54, '4'),
   ]
+
+  function selectedCustomer(customer: Customer) {
+    console.log(customer.nome);
+  }
+
+  function excludedCustomer(customer: Customer) {
+    console.log(`Excluded... ${customer.nome}`);
+  }
 
   return (
     <div className={`
@@ -18,7 +26,10 @@ export default function Home() {
     text-white
     `}>
       <Layout title="Cadastro Simples">
-        <Table clients={clients}></Table>
+        <Table customers={customers}
+          selectedCustomer={selectedCustomer}
+          excludedCustomer={excludedCustomer}
+        />
       </Layout>
     </div>
   )
