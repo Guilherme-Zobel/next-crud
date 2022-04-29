@@ -6,9 +6,8 @@ interface ButtonProps {
 export default function Button(props: ButtonProps) {
   return (
     <button className={`
-      bg-gradient-to-r from-blue-500 to-blue-600
+    ${props.className}
       text-white px-4 py-2 rounded-md
-      ${props.className}
     `}>
       {props.children}
     </button>

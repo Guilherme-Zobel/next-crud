@@ -1,4 +1,5 @@
 import Button from "../components/Button";
+import Form from "../components/Form";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Customer from "../core/Customer";
@@ -8,16 +9,16 @@ export default function Home() {
   const customers = [
     new Customer('Ana', 34, '1'),
     new Customer('Bia', 45, '2'),
-    new Customer('Caralos', 23, '3'),
+    new Customer('Carlos', 23, '3'),
     new Customer('Pedro', 54, '4'),
   ]
 
   function selectedCustomer(customer: Customer) {
-    console.log(customer.nome);
+    console.log(customer.name);
   }
 
   function excludedCustomer(customer: Customer) {
-    console.log(`Excluded... ${customer.nome}`);
+    console.log(`Excluded... ${customer.name}`);
   }
 
   return (
@@ -28,8 +29,14 @@ export default function Home() {
     `}>
       <Layout title="Cadastro Simples">
         <div className="flex justify-end">
-          <Button className="mb-4">Novo Cliente</Button>
+          <Button className={`
+          mb-4 
+          bg-gradient-to-r from-green-500 to-green-700`}
+          >
+            Novo Cliente
+          </Button>
         </div>
+        <Form customer={customers[2]}></Form>
         <Table customers={customers}
           selectedCustomer={selectedCustomer}
           excludedCustomer={excludedCustomer}
