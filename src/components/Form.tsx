@@ -5,6 +5,8 @@ import Input from "./Input";
 
 interface FormProps {
   customer: Customer
+  canceled?: () => void
+  customerChanged?: (customer: Customer) => void
 }
 
 export default function Form (props: FormProps) {
@@ -35,10 +37,14 @@ export default function Form (props: FormProps) {
         onChange={setAge}
         />
         <div className="flex justify-end mt-7">
-          <Button className="mr-2 bg-gradient-to-r from-blue-500 to-blue-700">
+          <Button
+            onClick={() => props.customerChanged?.(new Customer(name, +age, id))}
+            className="mr-2 bg-gradient-to-r from-blue-500 to-blue-700">
             {id ? 'Alterar' : 'Salvar'}
           </Button>
-          <Button className=" bg-gradient-to-r from-gray-500 to-gray-700">
+          <Button 
+            onClick={props.canceled}
+            className=" bg-gradient-to-r from-gray-500 to-gray-700">
               Cancelar
           </Button>
         </div>

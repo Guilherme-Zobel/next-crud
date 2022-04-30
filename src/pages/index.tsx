@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Button from "../components/Button";
 import Form from "../components/Form";
 import Layout from "../components/Layout";
@@ -21,6 +22,13 @@ export default function Home() {
     console.log(`Excluded... ${customer.name}`);
   }
 
+  function saveCustomer(customer: Customer) {
+    console.log(customer);
+    
+  }
+
+  const [visible, setVisible] = useState<'table' | 'form'>('table')
+
   return (
     <div className={`
     flex h-screen justify-center items-center
@@ -28,19 +36,33 @@ export default function Home() {
     text-white
     `}>
       <Layout title="Cadastro Simples">
+        { visible === 'table' ? (
+        <>
         <div className="flex justify-end">
-          <Button className={`
-          mb-4 
-          bg-gradient-to-r from-green-500 to-green-700`}
+          <Button
+            onClick={() => setVisible('form')}
+            className={`
+              mb-4 
+              bg-gradient-to-r from-green-500 to-green-700`}
           >
             Novo Cliente
           </Button>
         </div>
-        <Form customer={customers[2]}></Form>
         <Table customers={customers}
           selectedCustomer={selectedCustomer}
           excludedCustomer={excludedCustomer}
         />
+        </>
+          
+        ): (
+          <Form
+            customer={customers[2]}
+            customerChanged={saveCustomer}
+            canceled={() => setVisible('table')}
+          
+          />
+          
+        )}
       </Layout>
     </div>
   )
