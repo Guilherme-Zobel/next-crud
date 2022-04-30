@@ -38,7 +38,8 @@ export default function Form (props: FormProps) {
         />
         <div className="flex justify-end mt-7">
           <Button
-            onClick={() => props.customerChanged?.(new Customer(name, +age, id))}
+            onClick={() =>
+              props.customerChanged?.(new Customer(name, +age, id))}
             className="mr-2 bg-gradient-to-r from-blue-500 to-blue-700">
             {id ? 'Alterar' : 'Salvar'}
           </Button>

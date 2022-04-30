@@ -6,6 +6,9 @@ import Table from "../components/Table";
 import Customer from "../core/Customer";
 
 export default function Home() {
+  
+  const [customer, setCustomer] = useState<Customer>(Customer.empty)
+  const [visible, setVisible] = useState<'table' | 'form'>('table')
 
   const customers = [
     new Customer('Ana', 34, '1'),
@@ -15,7 +18,8 @@ export default function Home() {
   ]
 
   function selectedCustomer(customer: Customer) {
-    console.log(customer.name);
+    setCustomer(customer)
+    setVisible('form')
   }
 
   function excludedCustomer(customer: Customer) {
@@ -24,10 +28,13 @@ export default function Home() {
 
   function saveCustomer(customer: Customer) {
     console.log(customer);
-    
+    setVisible('table')
   }
 
-  const [visible, setVisible] = useState<'table' | 'form'>('table')
+  function newCustomer() {
+    setCustomer(Customer.empty())
+    setVisible('form')
+  }
 
   return (
     <div className={`
@@ -40,7 +47,7 @@ export default function Home() {
         <>
         <div className="flex justify-end">
           <Button
-            onClick={() => setVisible('form')}
+            onClick={newCustomer}
             className={`
               mb-4 
               bg-gradient-to-r from-green-500 to-green-700`}
@@ -54,9 +61,9 @@ export default function Home() {
         />
         </>
           
-        ): (
+        ) : (
           <Form
-            customer={customers[2]}
+            customer={customer}
             customerChanged={saveCustomer}
             canceled={() => setVisible('table')}
           
