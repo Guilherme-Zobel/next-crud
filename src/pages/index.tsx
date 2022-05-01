@@ -1,48 +1,21 @@
-import { useEffect, useState } from "react";
-import customerCollection from "../backend/db/CustomerCollection";
 import Button from "../components/Button";
 import Form from "../components/Form";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
-import Customer from "../core/Customer";
-import repositoryCustomer from "../core/ReopositoryCustomer";
+import useCustomers from "../hooks/useCustomers";
 
 export default function Home() {
 
-  const repo: repositoryCustomer = new customerCollection()
-  
-  const [customer, setCustomer] = useState<Customer>(Customer.empty)
-  const [customers, setCustomers] = useState<Customer[]>([])
-  const [visible, setVisible] = useState<'table' | 'form'>('table')
-
-  useEffect(getAll, [])
-  
-  function getAll() {
-    repo.getAll().then(customers => {
-      setCustomers(customers)
-      setVisible('table')
-    })
-  }
-
-  function selectedCustomer(customer: Customer) {
-    setCustomer(customer)
-    setVisible('form')
-  }
-
-  async function deleteCustomer(customer: Customer) {
-    await repo.delete(customer)
-    getAll()
-  }
-
-  async function saveCustomer(customer: Customer) {
-    await repo.save(customer)
-    getAll()
-  }
-
-  function newCustomer() {
-    setCustomer(Customer.empty())
-    setVisible('form')
-  }
+  const {
+    selectCustomer,
+    deleteCustomer,
+    saveCustomer,
+    newCustomer,
+    customer,
+    customers,
+    visibleTable,
+    displayTable,
+  } = useCustomers()
 
   return (
     <div className={`
@@ -51,7 +24,7 @@ export default function Home() {
     text-white
     `}>
       <Layout title="Cadastro Simples">
-        { visible === 'table' ? (
+        { visibleTable ? (
         <>
         <div className="flex justify-end">
           <Button
@@ -64,7 +37,7 @@ export default function Home() {
           </Button>
         </div>
         <Table customers={customers}
-          selectedCustomer={selectedCustomer}
+          selectedCustomer={selectCustomer}
           deleteCustomer={deleteCustomer}
         />
         </>
@@ -73,7 +46,7 @@ export default function Home() {
           <Form
             customer={customer}
             customerChanged={saveCustomer}
-            canceled={() => setVisible('table')}
+            canceled={() => displayTable}
           
           />
           
