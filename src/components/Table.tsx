@@ -4,12 +4,12 @@ import { iconEdition, iconTrash } from "./Icones"
 interface TableProps {
   customers: Customer[]
   selectedCustomer?: (customer: Customer) => void
-  excludedCustomer?: (customer: Customer) => void
+  deleteCustomer?: (customer: Customer) => void
 }
 
 export default function Table(props: TableProps) {
 
-  const displayActions = props.excludedCustomer || props.selectedCustomer
+  const displayActions = props.deleteCustomer || props.selectedCustomer
 
   function rederHead() {
     return (
@@ -27,8 +27,8 @@ export default function Table(props: TableProps) {
       return (
         <tr key={customer.id}
           className={`${i % 2 === 0 ? 'bg-purple-200' :  'bg-purple-100'}`}>
-          <td className="p-4 text-left">{customer.name}</td>
           <td className="p-4 text-left">{customer.id}</td>
+          <td className="p-4 text-left">{customer.name}</td>
           <td className="p-4 text-left">{customer.age}</td>
           {displayActions ? renderAction(customer) : false}
         </tr>
@@ -48,8 +48,8 @@ export default function Table(props: TableProps) {
             {iconEdition}
           </button>
           ) : false }
-        {props.excludedCustomer ? (
-          <button onClick={()=> props.excludedCustomer?.(customer)} className={`
+        {props.deleteCustomer ? (
+          <button onClick={()=> props.deleteCustomer?.(customer)} className={`
             flex justify-center items-center
             text-red-500 rounded-full p-2 m-1
             hover:bg-purple-50

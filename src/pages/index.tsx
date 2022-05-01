@@ -1,34 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import customerCollection from "../backend/db/CustomerCollection";
 import Button from "../components/Button";
 import Form from "../components/Form";
 import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Customer from "../core/Customer";
+import repositoryCustomer from "../core/ReopositoryCustomer";
 
 export default function Home() {
+
+  const repo: repositoryCustomer = new customerCollection()
   
   const [customer, setCustomer] = useState<Customer>(Customer.empty)
+  const [customers, setCustomers] = useState<Customer[]>([])
   const [visible, setVisible] = useState<'table' | 'form'>('table')
 
-  const customers = [
-    new Customer('Ana', 34, '1'),
-    new Customer('Bia', 45, '2'),
-    new Customer('Carlos', 23, '3'),
-    new Customer('Pedro', 54, '4'),
-  ]
+  useEffect(getAll, [])
+  
+  function getAll() {
+    repo.getAll().then(customers => {
+      setCustomers(customers)
+      setVisible('table')
+    })
+  }
 
   function selectedCustomer(customer: Customer) {
     setCustomer(customer)
     setVisible('form')
   }
 
-  function excludedCustomer(customer: Customer) {
-    console.log(`Excluded... ${customer.name}`);
+  async function deleteCustomer(customer: Customer) {
+    await repo.delete(customer)
+    getAll()
   }
 
-  function saveCustomer(customer: Customer) {
-    console.log(customer);
-    setVisible('table')
+  async function saveCustomer(customer: Customer) {
+    await repo.save(customer)
+    getAll()
   }
 
   function newCustomer() {
@@ -57,7 +65,7 @@ export default function Home() {
         </div>
         <Table customers={customers}
           selectedCustomer={selectedCustomer}
-          excludedCustomer={excludedCustomer}
+          deleteCustomer={deleteCustomer}
         />
         </>
           

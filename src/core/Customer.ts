@@ -3,7 +3,7 @@ export default class Customer {
     #name: string
     #age: number
 
-    constructor(name: string, age: number, id: string = null) {
+    constructor(name: string, age: number, id?: string) {
         this.#name = name
         this.#age = age
         this.#id = id
