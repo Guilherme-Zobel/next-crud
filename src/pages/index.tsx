@@ -46,7 +46,7 @@ export default function Home() {
           <Form
             customer={customer}
             customerChanged={saveCustomer}
-            canceled={() => displayTable}
+            canceled={() => displayTable()}
           
           />
           
